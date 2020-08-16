@@ -175,9 +175,13 @@ namespace FSharpLintVs
             var buffer = _currentSnapshot;
             var path = _document.FilePath;
 
+
             // replace with user token
             var token = _cts.Token;
             var instance = await FsLintVsPackage.Instance.WithCancellation(token);
+            
+            // this acts as a throttle 
+            await Task.Delay(200, token);
 
             if (Project == null)
             {
