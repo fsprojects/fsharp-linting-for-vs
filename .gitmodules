@@ -1,0 +1,4 @@
+[submodule "fsharplint"]
+	path = fsharplint
+	url = https://github.com/fsprojects/FSharpLint/
+	branch = master
