@@ -1,13 +1,9 @@
-﻿using Microsoft.Internal.VisualStudio.Shell.TableControl;
-using Microsoft.VisualStudio.Shell.Interop;
+﻿using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Shell.TableControl;
 using Microsoft.VisualStudio.Shell.TableManager;
 using Microsoft.VisualStudio.Text;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
-using System.Windows;
-using System.Windows.Documents;
 
 namespace FSharpLintVs
 {

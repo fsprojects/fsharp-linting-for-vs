@@ -1,10 +1,5 @@
-﻿using FSharpLint.Application;
-using FSharpLint.Framework;
-using Microsoft.FSharp.Core;
+﻿using FSharpLint.Framework;
 using Microsoft.VisualStudio.Text;
-using Microsoft.VisualStudio.Utilities;
-using System.Collections.Generic;
-using System.Text;
 
 namespace FSharpLintVs
 {

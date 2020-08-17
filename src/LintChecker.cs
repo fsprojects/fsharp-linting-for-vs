@@ -1,25 +1,18 @@
-﻿using Dotnet.ProjInfo.Workspace;
-using FSharp.Compiler;
+﻿using FSharp.Compiler;
 using FSharp.Compiler.SourceCodeServices;
 using FSharp.Compiler.Text;
 using FSharpLint.Application;
-using FSharpLintVs;
 using Microsoft.FSharp.Control;
 using Microsoft.VisualStudio;
-using Microsoft.VisualStudio.Language.StandardClassification;
 using Microsoft.VisualStudio.Text;
-using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Threading;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows.Threading;
 
 namespace FSharpLintVs
 {
