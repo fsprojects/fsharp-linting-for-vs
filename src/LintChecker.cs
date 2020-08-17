@@ -24,10 +24,17 @@ using System.Windows.Threading;
 namespace FSharpLintVs
 {
     ///<summary>
-    /// Finds the linting errors in comments for a specific buffer.
+    /// Checks the linting errors for a specific buffer.
     ///</summary>
-    /// <remarks><para>The lifespan of this object is tied to the lifespan of the taggers on the view. On creation of the first tagger, the LintChecker starts doing
-    /// work to find errors in the file. On the disposal of the last tagger, it shuts down.</para>
+    /// <remarks>
+    /// <para>
+    /// The lifespan of this object is tied to the lifespan of the taggers on the view. 
+    /// On creation of the first tagger, the LintChecker starts doing
+    /// work to find errors in the file. On the disposal of the last tagger, it shuts down.
+    /// </para>
+    /// <para>
+    /// The checker service does parsing in this class.
+    /// </para>
     /// </remarks>
     public class LintChecker : IDisposable
     {
@@ -181,7 +188,11 @@ namespace FSharpLintVs
             var instance = await FsLintVsPackage.Instance.WithCancellation(token);
             
             // this acts as a throttle 
-            await Task.Delay(200, token);
+            // TODO: make this configurable from options
+            await Task.Delay(200, token).ConfigureAwait(false);
+
+            if (token.IsCancellationRequested)
+                return;
 
             if (Project == null)
             {
@@ -223,8 +234,8 @@ namespace FSharpLintVs
             var source = _currentSnapshot.GetText();
             var sourceText = SourceText.ofString(source);
             var parseAsync = _provider.CheckerInstance.ParseFile(path, sourceText, parseOpts, null);
-            var parseResults = await FSharpAsync.StartAsTask(parseAsync, null, token);
-            if (parseResults.ParseHadErrors)
+            var parseResults = await FSharpAsync.StartAsTask(parseAsync, null, token).ConfigureAwait(false);
+            if (parseResults.ParseHadErrors || token.IsCancellationRequested)
                 return;
 
             var input = new Lint.ParsedFileInformation(ast: parseResults.ParseTree.Value, source, null);
@@ -242,6 +253,7 @@ namespace FSharpLintVs
             }
 
             await instance.JoinableTaskFactory.SwitchToMainThreadAsync();
+
             if (token.IsCancellationRequested)
                 return;
 
