@@ -1,4 +1,5 @@
-﻿using FSharp.Compiler;
+﻿using EnvDTE;
+using FSharp.Compiler;
 using FSharp.Compiler.SourceCodeServices;
 using FSharp.Compiler.Text;
 using FSharpLint.Application;
@@ -10,6 +11,7 @@ using Microsoft.VisualStudio.Threading;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -36,14 +38,16 @@ namespace FSharpLintVs
 
         private ITextSnapshot _currentSnapshot;
         private NormalizedSnapshotSpanCollection _dirtySpans;
-
-        private readonly ITextDocument _document;
         private readonly List<LintTagger> _activeTaggers = new List<LintTagger>();
         private CancellationTokenSource _cts;
 
+        public ITextDocument Document { get; }
+
         public Task Linting { get; private set; }
 
-        public LintProjectInfo Project { get; private set; }
+        public LintProjectInfo ProjectInfo { get; private set; }
+
+        public Lint.ConfigurationParam Configuration { get; private set; }
 
         public int RefCount => _activeTaggers.Count;
 
@@ -56,6 +60,7 @@ namespace FSharpLintVs
         public bool IsDisposed { get; private set; }
 
         public LintTableSnapshotFactory Factory { get; }
+        
 
         public LintChecker(LintCheckerProvider provider, ITextView textView, ITextBuffer buffer)
         {
@@ -66,7 +71,7 @@ namespace FSharpLintVs
             // Get the name of the underlying document buffer
             if (provider.TextDocumentFactoryService.TryGetTextDocument(textView.TextDataModel.DocumentBuffer, out ITextDocument document))
             {
-                this._document = document;
+                this.Document = document;
             }
 
             this.Factory = new LintTableSnapshotFactory(new LintingErrorsSnapshot(document, version: 0));
@@ -173,13 +178,16 @@ namespace FSharpLintVs
                 return;
 
             var buffer = _currentSnapshot;
-            var path = _document.FilePath;
+            var path = Document.FilePath;
 
 
             // replace with user token
             var token = _cts.Token;
             var instance = await FsLintVsPackage.Instance.WithCancellation(token);
-            
+
+            if (token.IsCancellationRequested)
+                return;
+
             // this acts as a throttle 
             // TODO: make this configurable from options
             await Task.Delay(200, token).ConfigureAwait(false);
@@ -187,7 +195,7 @@ namespace FSharpLintVs
             if (token.IsCancellationRequested)
                 return;
 
-            if (Project == null)
+            if (ProjectInfo == null)
             {
                 await instance.JoinableTaskFactory.SwitchToMainThreadAsync();
                 var solution = instance.Dte.Solution;
@@ -202,12 +210,33 @@ namespace FSharpLintVs
                 if (instance.SolutionService.GetGuidOfProject(vsHierarchy, out var guid) != VSConstants.S_OK)
                     return;
 
-                Project = new LintProjectInfo(project.Name, solution, guid, vsHierarchy);
+                ProjectInfo = new LintProjectInfo(project, solution, guid, vsHierarchy);
+            }
+
+            if(Configuration == null)
+            {
+                this.Configuration =
+                    new []
+                    {
+                        Document.FilePath,
+                        ProjectInfo.Project.FileName,
+                        ProjectInfo.Solution.FileName,
+                    }
+                    .Select(Path.GetDirectoryName)
+                    .Select(dir => Path.Combine(dir, "fsharplint.json"))
+                    .Distinct()
+                    .Where(File.Exists)
+                    .Select(Lint.ConfigurationParam.NewFromFile)
+                    .FirstOrDefault()
+                    ??
+                    Lint.ConfigurationParam.Default;
+
             }
 
             await Task.Yield();
 
             var config = Lint.ConfigurationParam.Default;
+            
             var lintOpts = new Lint.OptionalLintParameters(
                 cancellationToken: token,
                 configuration: config,
@@ -227,6 +256,7 @@ namespace FSharpLintVs
 
             var source = _currentSnapshot.GetText();
             var sourceText = SourceText.ofString(source);
+
             var parseAsync = _provider.CheckerInstance.ParseFile(path, sourceText, parseOpts, null);
             var parseResults = await FSharpAsync.StartAsTask(parseAsync, null, token).ConfigureAwait(false);
             if (parseResults.ParseHadErrors || token.IsCancellationRequested)
@@ -238,12 +268,12 @@ namespace FSharpLintVs
                 return;
 
             var oldLintingErrors = this.Factory.CurrentSnapshot;
-            var newLintErrors = new LintingErrorsSnapshot(_document, oldLintingErrors.VersionNumber + 1);
+            var newLintErrors = new LintingErrorsSnapshot(Document, oldLintingErrors.VersionNumber + 1);
 
             foreach (var lint in lintWarnings)
             {
                 var span = RangeToSpan(lint.Details.Range, buffer);
-                newLintErrors.Errors.Add(new LintError(span, lint, Project));
+                newLintErrors.Errors.Add(new LintError(span, lint, ProjectInfo));
             }
 
             await instance.JoinableTaskFactory.SwitchToMainThreadAsync();
