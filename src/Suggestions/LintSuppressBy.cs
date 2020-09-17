@@ -29,30 +29,24 @@ namespace FSharpLintVs
             this._suppressionMethod = suppressionMethod;
         }
 
-        public static string ToText(Method suppressionMethod)
-        {
-            switch (suppressionMethod)
+        public static string ToText(Method suppressionMethod) =>
+            suppressionMethod switch
             {
-                case Method.Inline:
-                    return "inline";
-                case Method.Above:
-                    return "above";
-                case Method.Section:
-                    return "section";
-                default:
-                    return "...";
-            }
-        }
+                Method.Inline => "inline",
+                Method.Above => "above",
+                Method.Section => "section",
+                _ => "...",
+            };
 
         public string DisplayText => $"Suppress {ToText(_suppressionMethod)}";
 
-        public ImageMoniker IconMoniker => _suppressionMethod switch 
-	    {
+        public ImageMoniker IconMoniker => _suppressionMethod switch
+        {
             Method.Above => KnownMonikers.GlyphUp,
             Method.Section => KnownMonikers.Inline,
             Method.Inline => KnownMonikers.GoToCurrentLine,
-		    _ => default
-	    };
+            _ => default
+        };
 
         public string IconAutomationText => default;
 
@@ -62,6 +56,7 @@ namespace FSharpLintVs
 
         public Task<IEnumerable<SuggestedActionSet>> GetActionSetsAsync(CancellationToken cancellationToken)
         {
+            // This method should not be called by VS
             throw new NotSupportedException();
         }
 
