@@ -13,6 +13,14 @@ This is a full-featured Visual Studio integration for the [**FSharpLint**](https
 - Fast, in-process linting
 - Fully asynchronous
 
+## Configuration
+
+We look for a `fsharplint.json` in this order:
+
+- In the same folder as the current document
+- In the project (`.fsproj`) directory
+- In the solution (`.sln`) directory
+
 ## In action
 
 ![fslint](https://user-images.githubusercontent.com/2375486/90334848-1f62ca80-dfee-11ea-932d-af0d330e4e8c.gif)
