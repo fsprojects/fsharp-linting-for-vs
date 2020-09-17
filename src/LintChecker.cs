@@ -190,8 +190,9 @@ namespace FSharpLintVs
             if (Project == null)
             {
                 await instance.JoinableTaskFactory.SwitchToMainThreadAsync();
-                var project = instance.Dte.Solution.FindProjectItem(path)?.ContainingProject;
-
+                var solution = instance.Dte.Solution;
+                var project = solution.FindProjectItem(path)?.ContainingProject;
+                
                 if (project == null)
                     return;
 
@@ -201,7 +202,7 @@ namespace FSharpLintVs
                 if (instance.SolutionService.GetGuidOfProject(vsHierarchy, out var guid) != VSConstants.S_OK)
                     return;
 
-                Project = new LintProjectInfo(project.Name, guid, vsHierarchy);
+                Project = new LintProjectInfo(project.Name, solution, guid, vsHierarchy);
             }
 
             await Task.Yield();

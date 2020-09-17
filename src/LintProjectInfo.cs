@@ -7,7 +7,6 @@ namespace FSharpLintVs
     {
         public string ProjectName { get; }
 
-
         // Performance will be improved if you "prebox" your System.Guid by, 
         // in your Microsoft.VisualStudio.Shell.TableManager.ITableEntry
         // or Microsoft.VisualStudio.Shell.TableManager.ITableEntriesSnapshot, having a
@@ -17,12 +16,16 @@ namespace FSharpLintVs
         public object ProjectGuid { get; }
 
         public IVsHierarchy Hierarchy { get; }
+        
+        public EnvDTE.Solution Solution { get; }
 
-        public LintProjectInfo(string projectName, Guid projectGuid, IVsHierarchy hierarchy)
+        public LintProjectInfo(string projectName, EnvDTE.Solution solution, Guid projectGuid, IVsHierarchy hierarchy)
         {
             ProjectName = projectName;
             ProjectGuid = projectGuid;
             Hierarchy = hierarchy;
+            Solution = solution;
+            
         }
 
     }
