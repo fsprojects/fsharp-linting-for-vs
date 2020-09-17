@@ -1,10 +1,13 @@
-﻿using Microsoft.VisualStudio.Shell.Interop;
+﻿using EnvDTE;
+using Microsoft.VisualStudio.Shell.Interop;
 using System;
 
 namespace FSharpLintVs
 {
     public class LintProjectInfo
     {
+        public Project Project { get; }
+        
         public string ProjectName { get; }
 
         // Performance will be improved if you "prebox" your System.Guid by, 
@@ -19,9 +22,12 @@ namespace FSharpLintVs
         
         public EnvDTE.Solution Solution { get; }
 
-        public LintProjectInfo(string projectName, EnvDTE.Solution solution, Guid projectGuid, IVsHierarchy hierarchy)
+        public LintProjectInfo(EnvDTE.Project project, EnvDTE.Solution solution, Guid projectGuid, IVsHierarchy hierarchy)
         {
-            ProjectName = projectName;
+            Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
+
+            Project = project;
+            ProjectName = project.Name;
             ProjectGuid = projectGuid;
             Hierarchy = hierarchy;
             Solution = solution;
