@@ -189,8 +189,7 @@ namespace FSharpLintVs
                 return;
 
             // this acts as a throttle 
-            // TODO: make this configurable from options
-            await Task.Delay(200, token).ConfigureAwait(false);
+            await Task.Delay(instance.Options.Throttle, token).ConfigureAwait(false);
 
             if (token.IsCancellationRequested)
                 return;
@@ -224,7 +223,6 @@ namespace FSharpLintVs
                     }
                     .Select(Path.GetDirectoryName)
                     .Select(dir => Path.Combine(dir, "fsharplint.json"))
-                    .Distinct()
                     .Where(File.Exists)
                     .Select(Lint.ConfigurationParam.NewFromFile)
                     .FirstOrDefault()
@@ -234,12 +232,10 @@ namespace FSharpLintVs
             }
 
             await Task.Yield();
-
-            var config = Lint.ConfigurationParam.Default;
-            
+          
             var lintOpts = new Lint.OptionalLintParameters(
                 cancellationToken: token,
-                configuration: config,
+                configuration: this.Configuration,
                 receivedWarning: null,
                 reportLinterProgress: null);
 
@@ -253,6 +249,7 @@ namespace FSharpLintVs
                 compilingFsLib: defaults.CompilingFsLib,
                 isExe: defaults.IsExe
             );
+
 
             var source = _currentSnapshot.GetText();
             var sourceText = SourceText.ofString(source);
