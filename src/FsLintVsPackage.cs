@@ -15,7 +15,7 @@ namespace FSharpLintVs
 {
     // DO NOT REMOVE THIS MAGICAL INCANTATION NO MATTER HOW MUCH VS WARNS YOU OF DEPRECATION    
     // --------------------------------------------------------------------------------------
-    [InstalledProductRegistration("F# Lint", "", "0.1", IconResourceID = 400)]
+    [InstalledProductRegistration("F# Lint", "Source code linting for F#.", "0.3", IconResourceID = 400)]
     // --------------------------------------------------------------------------------------
 
     // Package registration attributes
@@ -38,7 +38,8 @@ namespace FSharpLintVs
         private static readonly TaskCompletionSource<FsLintVsPackage> _instance = new TaskCompletionSource<FsLintVsPackage>();
         public static Task<FsLintVsPackage> Instance => _instance.Task;
 
-        public FsLintOptionsPage Options => GetDialogPage(typeof(FsLintOptionsPage)) as FsLintOptionsPage ?? new FsLintOptionsPage();
+        private FsLintOptionsPage _fsLintOptions;
+        public FsLintOptionsPage Options => _fsLintOptions ??= GetDialogPage(typeof(FsLintOptionsPage)) as FsLintOptionsPage;
 
         public IComponentModel MefHost { get; private set; }
 
@@ -65,7 +66,7 @@ namespace FSharpLintVs
             Statusbar = await this.GetServiceAsync<SVsStatusbar, IVsStatusbar>();
             Dte = await this.GetServiceAsync<SDTE, DTE2>();
             SolutionService = await this.GetServiceAsync<SVsSolution, IVsSolution>();
-                        
+            
             // When initialized asynchronously, the current thread may be a background thread at this point.
             // Do any initialization that requires the UI thread after switching to the UI thread.
             await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
