@@ -3,7 +3,9 @@ using FSharp.Compiler;
 using FSharp.Compiler.SourceCodeServices;
 using FSharp.Compiler.Text;
 using FSharpLint.Application;
+using Microsoft.FSharp.Collections;
 using Microsoft.FSharp.Control;
+using Microsoft.FSharp.Core;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
@@ -40,6 +42,8 @@ namespace FSharpLintVs
         private NormalizedSnapshotSpanCollection _dirtySpans;
         private readonly List<LintTagger> _activeTaggers = new List<LintTagger>();
         private CancellationTokenSource _cts;
+        private FSharpParsingOptions parseOpts;
+        private FSharpProjectOptions projectOptions;
 
         public ITextDocument Document { get; }
 
@@ -60,7 +64,7 @@ namespace FSharpLintVs
         public bool IsDisposed { get; private set; }
 
         public LintTableSnapshotFactory Factory { get; }
-        
+
 
         public LintChecker(LintCheckerProvider provider, ITextView textView, ITextBuffer buffer)
         {
@@ -101,7 +105,7 @@ namespace FSharpLintVs
         {
             _activeTaggers.Remove(tagger);
 
-            if (RefCount== 0)
+            if (RefCount == 0)
             {
                 Dispose();
             }
@@ -199,7 +203,7 @@ namespace FSharpLintVs
                 await instance.JoinableTaskFactory.SwitchToMainThreadAsync();
                 var solution = instance.Dte.Solution;
                 var project = solution.FindProjectItem(path)?.ContainingProject;
-                
+
                 if (project == null)
                     return;
 
@@ -212,10 +216,10 @@ namespace FSharpLintVs
                 ProjectInfo = new LintProjectInfo(project, solution, guid, vsHierarchy);
             }
 
-            if(Configuration == null)
+            if (Configuration == null)
             {
                 this.Configuration =
-                    new []
+                    new[]
                     {
                         Document.FilePath,
                         ProjectInfo.Project.FileName,
@@ -232,34 +236,25 @@ namespace FSharpLintVs
             }
 
             await Task.Yield();
-          
+
             var lintOpts = new Lint.OptionalLintParameters(
                 cancellationToken: token,
                 configuration: this.Configuration,
                 receivedWarning: null,
                 reportLinterProgress: null);
 
-            var defaults = FSharpParsingOptions.Default;
-            var parseOpts = new FSharpParsingOptions(
-                sourceFiles: new string[] { path },
-                conditionalCompilationDefines: defaults.ConditionalCompilationDefines,
-                errorSeverityOptions: defaults.ErrorSeverityOptions,
-                isInteractive: defaults.IsInteractive,
-                lightSyntax: defaults.LightSyntax,
-                compilingFsLib: defaults.CompilingFsLib,
-                isExe: defaults.IsExe
-            );
-
-
             var source = _currentSnapshot.GetText();
             var sourceText = SourceText.ofString(source);
+            var parse = instance.Options.TypeCheck ?
+                    TryParseAndCheckAsync(path, sourceText, token) :
+                    TryParseAsync(path, sourceText, token);
 
-            var parseAsync = _provider.CheckerInstance.ParseFile(path, sourceText, parseOpts, null);
-            var parseResults = await FSharpAsync.StartAsTask(parseAsync, null, token).ConfigureAwait(false);
-            if (parseResults.ParseHadErrors || token.IsCancellationRequested)
+            var (parseResultsOpt, checkResults) = await parse.ConfigureAwait(false);
+            if (parseResultsOpt == null || parseResultsOpt.Value.ParseHadErrors || token.IsCancellationRequested)
                 return;
-
-            var input = new Lint.ParsedFileInformation(ast: parseResults.ParseTree.Value, source, null);
+            
+            var parseResults = parseResultsOpt.Value;
+            var input = new Lint.ParsedFileInformation(ast: parseResults.ParseTree.Value, source, checkResults);
             var lintResult = Lint.lintParsedSource(lintOpts, input);
             if (!lintResult.TryGetSuccess(out var lintWarnings))
                 return;
@@ -279,6 +274,70 @@ namespace FSharpLintVs
                 return;
 
             UpdateLintingErrors(newLintErrors);
+        }
+
+        private async Task<(FSharpOption<FSharpParseFileResults>, FSharpOption<FSharpCheckFileResults>)>
+            TryParseAndCheckAsync(string path, ISourceText sourceText, CancellationToken token)
+        {
+            if (this.projectOptions == null)
+            {
+                var optionsAsync = _provider.CheckerInstance.GetProjectOptionsFromScript(
+                  filename: path,
+                  sourceText: sourceText,
+                  assumeDotNetFramework: false,
+                  useSdkRefs: true,
+                  useFsiAuxLib: true,
+                  previewEnabled: true,
+                  otherFlags: new string[] { "--targetprofile:netstandard" },
+                  loadedTimeStamp: null,
+                  extraProjectInfo: null,
+                  optionsStamp: null,
+                  userOpName: null
+              );
+
+                var (options, errors) = await FSharpAsync.StartAsTask(optionsAsync, null, token);
+                if (!errors.IsEmpty)
+                    return (null, null);
+
+                this.projectOptions = options;
+            }
+
+            var performParseAndCheck = _provider.CheckerInstance.ParseAndCheckFileInProject(
+                filename: path,
+                fileversion: 1,
+                sourceText: sourceText,
+                options: projectOptions,
+                textSnapshotInfo: null,
+                userOpName: null
+            );
+
+            var (parseResults, checkAnswer) = await FSharpAsync.StartAsTask(performParseAndCheck, null, token);
+            if (checkAnswer is FSharpCheckFileAnswer.Succeeded succeeded)
+                return (parseResults, succeeded.Item);
+
+            return (parseResults, null);
+        }
+
+        private async Task<(FSharpOption<FSharpParseFileResults>, FSharpOption<FSharpCheckFileResults>)>
+            TryParseAsync(string path, ISourceText sourceText, CancellationToken token)
+        {
+            if(parseOpts == null)
+            {
+                var defaults = FSharpParsingOptions.Default;
+                this.parseOpts = new FSharpParsingOptions(
+                    sourceFiles: new string[] { path },
+                    conditionalCompilationDefines: defaults.ConditionalCompilationDefines,
+                    errorSeverityOptions: defaults.ErrorSeverityOptions,
+                    isInteractive: defaults.IsInteractive,
+                    lightSyntax: defaults.LightSyntax,
+                    compilingFsLib: defaults.CompilingFsLib,
+                    isExe: defaults.IsExe
+                );
+            }
+
+            var parseAsync = _provider.CheckerInstance.ParseFile(path, sourceText, parseOpts, "FsLint");
+            var parseResults = await FSharpAsync.StartAsTask(parseAsync, null, token).ConfigureAwait(false);
+            return (parseResults, null);
         }
 
         public static SnapshotSpan RangeToSpan(Range.range fsrange, ITextSnapshot textSnapshot)

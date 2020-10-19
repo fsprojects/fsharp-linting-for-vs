@@ -149,8 +149,6 @@ namespace FSharpLintVs
                             content = err.Project.ProjectGuid;
                             return true;
                         }
-
-                        // TODO: add support for case StandardTableKeyNames.ProjectGuid:
                 }
 
             }
