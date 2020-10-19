@@ -1,10 +1,17 @@
 Release Notes
 ============
 
+0.3
+----
+
+* Lints TAST
+* Support type-checked linting enabled by options
+* Make latency configurable
+
 0.2
 ----
 
-* Look for json configuration in related paths (see Readme)
+* Look for JSON configuration in related paths (see Readme)
 * Use throttle to limit linting calls
 
 0.1

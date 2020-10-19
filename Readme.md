@@ -25,6 +25,12 @@ We look for a `fsharplint.json` in this order:
 
 ![fslint](https://user-images.githubusercontent.com/2375486/90334848-1f62ca80-dfee-11ea-932d-af0d330e4e8c.gif)
 
+## Options
+
+Linter options can be found in `F# Tools > Linting`
+
+![FsLintOptions](https://user-images.githubusercontent.com/2375486/96405667-6beba180-11fb-11eb-821d-aff9e858a7d8.jpg)
+
 ## See an issue?
 
 If you see an issue with the Visual Studio integration or with configuration, please [file it here](https://github.com/deviousasti/fsharp-linting-for-vs/issues).
