@@ -92,6 +92,7 @@
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
@@ -121,7 +122,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="FSharpLint.Core.fsproj">
+    <ProjectReference Include="FsLint\FSharpLint.Core.fsproj">
       <Project>{7857e9a7-8879-430e-a9b0-a11dcf2ef68d}</Project>
       <Name>FSharpLint.Core</Name>
     </ProjectReference>

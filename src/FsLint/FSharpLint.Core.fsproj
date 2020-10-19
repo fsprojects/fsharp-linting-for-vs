@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IsPackable>true</IsPackable>
+    <RootNamespace>FSharpLint.Core</RootNamespace>
+    <EnableDefaultItems>false</EnableDefaultItems>
+
+    <Title>FSharpLint.Core</Title>
+    <Description>API to programmatically run FSharpLint.</Description>
+    <PackageTags>F#;fsharp;lint;FSharpLint;fslint;api</PackageTags>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Framework -->
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\AssemblyInfo.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Prelude.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Framework/Utilities.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Framework/HintParser.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Framework\Suggestion.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Framework\Ast.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Framework\AstInfo.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Framework\AbstractSyntaxArray.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Framework\Rules.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Framework\Resources.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Framework\ParseFile.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Framework\Suppression.fs" />
+    <!-- Rules -->
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Identifiers.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Formatting\TupleFormatting\TupleFormattingHelper.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Formatting\TupleFormatting\TupleCommaSpacing.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Formatting\TupleFormatting\TupleIndentation.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Formatting\TupleFormatting\TupleParentheses.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Formatting\PatternMatchFormatting\PatternMatchFormattingHelper.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Formatting\PatternMatchFormatting\PatternMatchClausesOnNewLine.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Formatting\PatternMatchFormatting\PatternMatchOrClausesOnNewLine.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Formatting\PatternMatchFormatting\PatternMatchClauseIndentation.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Formatting\PatternMatchFormatting\PatternMatchExpressionIndentation.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Formatting\Spacing\ModuleDeclSpacing.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Formatting\Spacing\ClassMemberSpacing.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Formatting\TypedItemSpacing.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Formatting\TypePrefixing.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Formatting\UnionDefinitionIndentation.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\RecursiveAsyncFunction.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\RedundantNewKeyword.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\NestedStatements.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\RaiseWithTooManyArguments\RaiseWithTooManyArgumentsHelper.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\RaiseWithTooManyArguments\FailwithWithSingleArgument.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\RaiseWithTooManyArguments\RaiseWithSingleArgument.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\RaiseWithTooManyArguments\NullArgWithSingleArgument.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\RaiseWithTooManyArguments\InvalidOpWithSingleArgument.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\RaiseWithTooManyArguments\InvalidArgWithTwoArguments.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\RaiseWithTooManyArguments\FailwithfWithArgumentsMatchingFormatString.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\SourceLength\SourceLengthHelper.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\SourceLength\MaxLinesInLambdaFunction.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\SourceLength\MaxLinesInMatchLambdaFunction.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\SourceLength\MaxLinesInValue.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\SourceLength\MaxLinesInFunction.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\SourceLength\MaxLinesInMember.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\SourceLength\MaxLinesInConstructor.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\SourceLength\MaxLinesInProperty.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\SourceLength\MaxLinesInModule.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\SourceLength\MaxLinesInRecord.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\SourceLength\MaxLinesInEnum.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\SourceLength\MaxLinesInUnion.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\SourceLength\MaxLinesInClass.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\FunctionReimplementation\FunctionReimplementationHelper.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\FunctionReimplementation\ReimplementsFunction.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\FunctionReimplementation\CanBeReplacedWithComposition.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\Naming\NamingHelper.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\Naming\InterfaceNames.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\Naming\ExceptionNames.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\Naming\TypeNames.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\Naming\RecordFieldNames.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\Naming\EnumCasesNames.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\Naming\UnionCasesNames.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\Naming\ModuleNames.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\Naming\LiteralNames.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\Naming\NamespaceNames.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\Naming\MemberNames.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\Naming\ParameterNames.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\Naming\MeasureTypeNames.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\Naming\ActivePatternNames.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\Naming\PublicValuesNames.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\Naming\NonPublicValuesNames.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\NumberOfItems\NumberOfItemsHelper.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\NumberOfItems\MaxNumberOfItemsInTuple.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\NumberOfItems\MaxNumberOfFunctionParameters.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\NumberOfItems\MaxNumberOfMembers.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\NumberOfItems\MaxNumberOfBooleanOperatorsInCondition.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\Binding\BindingHelper.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\Binding\FavourIgnoreOverLetWild.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\Binding\WildcardNamedWithAsPattern.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\Binding\UselessBinding.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\Binding\TupleOfWildcards.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Typography\Indentation.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Typography\MaxCharactersOnLine.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Typography\TrailingWhitespaceOnLine.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Typography\MaxLinesInFile.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Typography\TrailingNewLineInFile.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Typography\NoTabCharacters.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Hints\HintsHelper.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Hints\HintMatcher.fs" />
+    <!-- Application  -->
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Application\Configuration.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Application\Lint.fsi" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Application\Lint.fs" />
+    <EmbeddedResource Include="..\..\fsharplint\src\FSharpLint.Core\DefaultConfiguration.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\fsharplint\src\FSharpLint.Core\Text.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Dotnet.ProjInfo.Workspace" Version="0.44.0" />
+    <PackageReference Include="Dotnet.ProjInfo.Workspace.FCS" Version="0.44.0" />
+    <PackageReference Include="FParsec" Version="1.1.1" />
+    <PackageReference Include="FSharp.Compiler.Service" Version="37.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Update="FSharp.Core" Version="4.7.2" />
+  </ItemGroup>
+  
+</Project>
