@@ -107,10 +107,10 @@ namespace FSharpLintVs
 
         public IEnumerable<ITextSnapshotLine> FindSection()
         {
-            var cursor = _error.Line;
             var snapshot = _error.Span.Snapshot;
+            var cursor = _error.Line + 1;
 
-            while (cursor-- >= 0)
+            while (--cursor >= 0)
             {
                 var line = snapshot.GetLineFromLineNumber(cursor);
                 if (line.GetText().StartsWith("// fsharplint:disable "))
