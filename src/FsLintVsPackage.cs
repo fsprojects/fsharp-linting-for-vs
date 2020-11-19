@@ -15,7 +15,7 @@ namespace FSharpLintVs
 {
     // DO NOT REMOVE THIS MAGICAL INCANTATION NO MATTER HOW MUCH VS WARNS YOU OF DEPRECATION    
     // --------------------------------------------------------------------------------------
-    [InstalledProductRegistration("F# Lint", "Source code linting for F#.", "0.3", IconResourceID = 400)]
+    [InstalledProductRegistration("F# Lint", "Source code linting for F#.", "0.4", IconResourceID = 400)]
     // --------------------------------------------------------------------------------------
 
     // Package registration attributes
