@@ -15,13 +15,11 @@ namespace FSharpLintVs
     public class LintActionsSource : ISuggestedActionsSource
     {
         private readonly ITextBuffer _textBuffer;
-        private readonly ITextView _textView;
         private LintChecker _lintChecker;
 
-        public LintActionsSource(ITextView textView, ITextBuffer textBuffer)
+        public LintActionsSource(ITextBuffer textBuffer)
         {
             _textBuffer = textBuffer;
-            _textView = textView;
         }
 
 #pragma warning disable 0067

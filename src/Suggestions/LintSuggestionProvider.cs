@@ -14,7 +14,7 @@ namespace FSharpLintVs
 
         public ISuggestedActionsSource CreateSuggestedActionsSource(ITextView textView, ITextBuffer textBuffer)
         {
-            return new LintActionsSource(textView, textBuffer);
+            return new LintActionsSource(textBuffer);
         }
     }
 }
