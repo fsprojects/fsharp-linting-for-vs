@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -8,14 +7,13 @@ using EnvDTE80;
 using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using static FSharpLint.Framework.Suggestion;
 using Task = System.Threading.Tasks.Task;
 
 namespace FSharpLintVs
 {
     // DO NOT REMOVE THIS MAGICAL INCANTATION NO MATTER HOW MUCH VS WARNS YOU OF DEPRECATION    
     // --------------------------------------------------------------------------------------
-    [InstalledProductRegistration("F# Lint", "Source code linting for F#.", "0.4", IconResourceID = 400)]
+    [InstalledProductRegistration("F# Lint", "Source code linting for F#.", "0.4.1", IconResourceID = 400)]
     // --------------------------------------------------------------------------------------
 
     // Package registration attributes

@@ -1,6 +1,11 @@
 Release Notes
 ============
 
+0.4
+----
+
+* Hotfix for nested statements
+
 0.3
 ----
 
