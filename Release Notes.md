@@ -1,6 +1,12 @@
 Release Notes
 ============
 
+0.5
+----
+
+* Support new rules
+* Update to FCS 38.0.2
+
 0.4
 ----
 

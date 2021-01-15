@@ -99,6 +99,7 @@
     <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Typography\TrailingWhitespaceOnLine.fs" />
     <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Typography\MaxLinesInFile.fs" />
     <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Typography\TrailingNewLineInFile.fs" />
+    <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Conventions\NoPartialFunctions.fs" Link="NoPartialFunctions.fs" />
     <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Typography\NoTabCharacters.fs" />
     <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Hints\HintsHelper.fs" />
     <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Rules\Hints\HintMatcher.fs" />
@@ -117,7 +118,8 @@
     <PackageReference Include="Dotnet.ProjInfo.Workspace" Version="0.44.0" />
     <PackageReference Include="Dotnet.ProjInfo.Workspace.FCS" Version="0.44.0" />
     <PackageReference Include="FParsec" Version="1.1.1" />
-    <PackageReference Include="FSharp.Compiler.Service" Version="38.0.0" />
+    <PackageReference Include="FSharp.Core" Version="5.0.0" />
+    <PackageReference Include="FSharp.Compiler.Service" Version="38.0.2" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
   <ItemGroup>
