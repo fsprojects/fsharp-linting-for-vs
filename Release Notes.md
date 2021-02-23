@@ -1,6 +1,11 @@
 Release Notes
 ============
 
+0.5.1
+----
+
+* Hotfix release
+
 0.5
 ----
 
