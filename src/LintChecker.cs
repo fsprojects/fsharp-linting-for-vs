@@ -224,8 +224,10 @@ namespace FSharpLintVs
                         Document.FilePath,
                         ProjectInfo.Project.FileName,
                         ProjectInfo.Solution.FileName,
+                        Directory.GetParent(ProjectInfo.Solution.FileName).FullName
                     }
                     .Select(Path.GetDirectoryName)
+                    .Where(dir => !string.IsNullOrEmpty(dir))
                     .Select(dir => Path.Combine(dir, "fsharplint.json"))
                     .Where(File.Exists)
                     .Select(Lint.ConfigurationParam.NewFromFile)
