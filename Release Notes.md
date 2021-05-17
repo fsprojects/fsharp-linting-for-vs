@@ -1,6 +1,11 @@
 Release Notes
 ============
 
+0.5.2
+----
+
+* Check for config in parent folder of solution (@kjreills)
+
 0.5.1
 ----
 
