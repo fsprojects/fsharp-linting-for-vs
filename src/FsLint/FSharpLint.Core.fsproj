@@ -14,7 +14,6 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- Framework -->
-    <Compile Include="IonideShim.fs" />
     <Compile Include="..\..\fsharplint\src\FSharpLint.Core\AssemblyInfo.fs" />
     <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Prelude.fs" />
     <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Framework/Utilities.fs" />

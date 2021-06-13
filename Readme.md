@@ -20,6 +20,7 @@ We look for a `fsharplint.json` in this order:
 - In the same folder as the current document
 - In the project (`.fsproj`) directory
 - In the solution (`.sln`) directory
+- In the directory above the solution directory, if it exists
 
 ## In action
 
