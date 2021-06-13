@@ -14,6 +14,7 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- Framework -->
+    <Compile Include="IonideShim.fs" />
     <Compile Include="..\..\fsharplint\src\FSharpLint.Core\AssemblyInfo.fs" />
     <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Prelude.fs" />
     <Compile Include="..\..\fsharplint\src\FSharpLint.Core\Framework/Utilities.fs" />
@@ -119,11 +120,11 @@
     <PackageReference Include="Dotnet.ProjInfo.Workspace.FCS" Version="0.44.0" />
     <PackageReference Include="FParsec" Version="1.1.1" />
     <PackageReference Include="FSharp.Core" Version="5.0.0" />
-    <PackageReference Include="FSharp.Compiler.Service" Version="38.0.2" />
+    <PackageReference Include="FSharp.Compiler.Service" Version="39.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Update="FSharp.Core" Version="5.0.0" />
+    <PackageReference Update="FSharp.Core" Version="5.0.1" />
   </ItemGroup>
   
 </Project>
