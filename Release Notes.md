@@ -1,6 +1,12 @@
 Release Notes
 ============
 
+0.6
+----
+
+* Upgrade to FCS 39
+* Custom build of FSharpLint 0.19
+
 0.5.2
 ----
 
