@@ -99,7 +99,7 @@ namespace FSharpLintVs
         #region Checker
 
         private readonly Lazy<FSharpChecker> _checker = new Lazy<FSharpChecker>(() =>
-            FSharpChecker.Create(null, null, null, null, null, null, null, null)
+            FSharpChecker.Create(null, null, null, null, null, null, null, null, null)
         );
 
         public FSharpChecker CheckerInstance => _checker.Value;

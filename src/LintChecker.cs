@@ -285,7 +285,7 @@ namespace FSharpLintVs
             {
                 var optionsAsync = _provider.CheckerInstance.GetProjectOptionsFromScript(
                   filename: path,
-                  sourceText: sourceText,
+                  source: sourceText,
                   assumeDotNetFramework: false,
                   useSdkRefs: true,
                   useFsiAuxLib: true,
@@ -294,7 +294,8 @@ namespace FSharpLintVs
                   loadedTimeStamp: null,
                   extraProjectInfo: null,
                   optionsStamp: null,
-                  userOpName: null
+                  userOpName: null,
+                  sdkDirOverride: null
               );
 
                 var (options, errors) = await FSharpAsync.StartAsTask(optionsAsync, null, token);
@@ -306,10 +307,9 @@ namespace FSharpLintVs
 
             var performParseAndCheck = _provider.CheckerInstance.ParseAndCheckFileInProject(
                 filename: path,
-                fileversion: 1,
+                fileVersion: 1,
                 sourceText: sourceText,
                 options: projectOptions,
-                textSnapshotInfo: null,
                 userOpName: null
             );
 
@@ -342,7 +342,7 @@ namespace FSharpLintVs
             return (parseResults, null);
         }
 
-        public static SnapshotSpan RangeToSpan(Range.range fsrange, ITextSnapshot textSnapshot)
+        public static SnapshotSpan RangeToSpan(Range fsrange, ITextSnapshot textSnapshot)
         {
             var from = fsrange.StartLine - 1;
             ITextSnapshotLine anchor = textSnapshot.GetLineFromLineNumber(from);
@@ -352,7 +352,7 @@ namespace FSharpLintVs
             return new SnapshotSpan(textSnapshot, new Span(start, end - start));
         }
 
-        public static ITrackingSpan RangeToTrackingSpan(Range.range fsrange, ITextSnapshot textSnapshot)
+        public static ITrackingSpan RangeToTrackingSpan(Range fsrange, ITextSnapshot textSnapshot)
         {
             var from = fsrange.StartLine - 1;
             ITextSnapshotLine anchor = textSnapshot.GetLineFromLineNumber(from);
